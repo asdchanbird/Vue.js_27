@@ -4,9 +4,55 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vue3</title>
 </head>
 <body>
-    
+    <div id="app">
+        <!-- 雙括弧是模板語言 -->
+        <!-- 作用域scope -->
+        <h1>{{typeof count}}</h1>
+        <!-- boolean ?1 :0 -->
+        <h1>{{talk ? '愛講話':'齁又'}}</h1>
+    </div>
+
+    <!-- Vue 2寫法 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        // 寫法一
+        // new Vue ({
+        //     data: {
+        //         count: 1
+        //     },
+        //     el: '#app'
+        // })
+        // App.$mount('#app')
+
+        // 寫法二
+        // const App = new Vue ({
+        //     data: {
+        //         count: 1
+        //     },
+        //     el: '#app'
+        // })
+        // App.$mount('#app')//渲染到#app裡面
+    </script>
+
+    <!-- Vue 3寫法(基本用這個) -->
+     <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        console.log(Vue)
+        // 新增一個應用application→建立Vue實體(instance)，並掛載(mount)在網頁結點上
+        Vue.createApp({
+            data(){
+                return {
+                    count: 1,//number
+                    name: 'felix',//string
+                    talk: true,//boolen
+                    array: [1,2,3],//array
+                    obj:{test: '123'}//object
+                }
+            }
+        }).mount('#app')//並掛載(mount)在網頁節點上(id='app')
+    </script>
 </body>
 </html>
