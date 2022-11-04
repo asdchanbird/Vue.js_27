@@ -4,20 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue3</title>
+    <title>計算機1</title>
+    <style>
+        #app{
+            display: inline-flex;
+        }
+        .numBtns{
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 12rem;
+        }
+        button{
+            margin: .25rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background-color: #eee;
+            box-shadow: -6px -6px 9px 0px white, 6px 6px 9px rgba(0, 0, 0, 0.4);
+        }
+        button:hover{
+            background-color: #999;
+        }
+        .numBtns button{
+            flex-basis: 3rem;
+            height: 3rem;
+        }
+        .keyin{
+            background-color: #ddd;
+        }
+
+    </style>
 </head>
 <body>
     <div id="app">
-
-        <button v-for="num in 9" ::key="num" @click="keyin = num">{{num}}</button>
+        <div>
+            <ol>
+                <li>把按鈕先做出來</li>
+                <li>按鈕按的數字或透過keyin組起來</li>
+            </ol>
+            <div class="keyin">
+                {{keyin}}
+            </div>
+        </div>
         
-        <button>{{keyin}}</button>
-        <button @click="reduce">-</button>
+        <!-- <button>{{keyin}}</button> -->
+        <div class="numBtns">
+            <button v-for="num in 9" ::key="num" @click="keyNumber(num)">{{num}}</button>
+            <button @click="clear">AC</button>
+            <button @click="keyNumber(0)">0</button>
+            <button @click="keyDote">.</button>
+            <button @click="reduce">-</button>
+            <button @click="add">+</button>
+            <button @click="calc">=</button>
+    
+            <!-- <button @click="clear">C</button> -->
+        </div>
+        <!-- <button @click="reduce">-</button>
         <button @click="add">+</button>
         <button @click="calc">=</button>
-        <button @click="clear">C</button>
+        <button @click="clear">C</button> -->
         <div>
             {{step}}
+            <h5>{{result}}</h5>
         </div>
 
         <h5>{{result}}</h5>
@@ -32,21 +81,33 @@
                 return {
                     step: '',
                     result: 0,
-                    keyin: 0,
+                    keyin: '',
                 }
             },
             methods:{
-                keyin(){
-
-                }
+                keyNumber(number){
+                    if(this.keyin == "0" && number == "0") return//如果keyin初始值為0則輸入number0不繼續下去
+                    this.keyin += number.toString() //為了二位數以上數值輸入
+                },
+                keyDote(){
+                    if(this.keyin.includes(".")) return //如果已經有小數點就不繼續
+                    this.keyin += "."
+                },
+                clear(){
+                    this.keyin = ""
+                    // this.result = ""
+                },
                 add(){
-                    this.result += 1,
+                    this.result += 1
                 },
                 reduce(){
                     if(this.count <= 0) return //就不會繼續往下執行
                     this.count -= 1
-                    this.sumTotal()
+                    // this.sumTotal()
                 },
+                sumTotal(){
+                    
+                }
                 
             }
         }).mount('#app')
