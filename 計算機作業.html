@@ -11,6 +11,7 @@
 </head>
 <body>
     <div id="app">
+        <input class="display" v-model="current"></input>
         <p>{{keyin}}</p>
         <div><button v-for="num in 9" @click="number(num)">{{num}}</button></div>
         <button @click="reduceCount">-</button>
@@ -34,50 +35,46 @@
                     keyin: '',
                     sum: '',
                     arrNum:[],
-                    n:'',
-                    x:'',
+                    current: '',
+                    previous:'',
+                    operator:null,
+                    operatorClicked:false
                 }
             },
             methods:{
                 number(num){
-                    this.keyin +=num
-                    this.n += num
+                    // this.keyin +=num
+                    // this.n += num
+                    if (this.operatorClicked) this.current = "";
+                    // 重置operatorClicked的值，讓第二個數字也能正常輸入
+                    this.operatorClicked = false;
+                    this.current =
+                    this.current === "0" ? `${number}` : `${this.current}${number}`;
                 },
                 addCount(){
-                    this.arrNum.push(this.n)
-                    this.keyin += "+"
-                    this.n += ''
-                    this.x = '+'
-                    // this.n=''
-                    // this.sum = "+"
-                
+                    this.operator = (a, b) => a + b;
+
+                    this.setPrevious();
 
                 },
-                
+                setPrevious(){
+                    this.previous = this.current;
+                    this.operatorClicked = true;
+                },
                 reduceCount(){
-                    this.arrNum.push(this.n)
-                    this.n = ''
-                    this.x = '-'
-                    this.keyin += " - "
-                    // this.result += '-'
-
+                 
                 },
-                calc(x){
-                    this.arrNum.push(this.n)
-
-                    if(x == '+' ){
-                        this.arrNum.forEach(element => {
-                            this.result += parseInt(element)
-                        });
-                    }
-                    if(x == '-'){
-                        this.result = parseInt(this.arrNum[0]) + parseInt(this.arrNum[1])*-1
-                    }
-                    // console.log(result)
+                calc(){
+                    console.log(this.current, this.previous);
+                    this.current = `${this.operator(
+                        parseFloat(this.previous),
+                        parseFloat(this.current)
+                    )}`;
+                    this.operator = null;
+                    this.operatorClicked = false;
                 },
                 clear(){
-                    this.result = ''
-                    this.keyin = ''
+                   
                 }
                 
             }
