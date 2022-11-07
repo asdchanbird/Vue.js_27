@@ -42,14 +42,9 @@
                 }
             },
             methods:{
-                number(num){
-                    // this.keyin +=num
-                    // this.n += num
-                    if (this.operatorClicked) this.current = "";
-                    // 重置operatorClicked的值，讓第二個數字也能正常輸入
-                    this.operatorClicked = false;
-                    this.current =
-                    this.current === "0" ? `${number}` : `${this.current}${number}`;
+                number(number){
+                    if(this.keyin === '0' && number === 0 ) return//如果keyin 初始值為0
+                    this.keyin += number.toString()//為了二位數以上數值輸入
                 },
                 addCount(){
                     this.operator = (a, b) => a + b;
@@ -65,13 +60,7 @@
                  
                 },
                 calc(){
-                    console.log(this.current, this.previous);
-                    this.current = `${this.operator(
-                        parseFloat(this.previous),
-                        parseFloat(this.current)
-                    )}`;
-                    this.operator = null;
-                    this.operatorClicked = false;
+                    this
                 },
                 clear(){
                    

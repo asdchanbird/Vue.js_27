@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue3</title>
+    <style>
+        label,input,select {
+            margin: 10px 5px;
+        }
+        .avatar{
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background-color: #111;
+            border-radius: 50%;
+            border: 2px solid #111;
+            overflow: hidden;
+        }
+        .avatar .head {
+            position: absolute;
+            top: 15px;
+            left: 50px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #fff;
+            
+        }
+        .tab {
+            width: 400px;
+            height: 150px;
+            background-color: dodgerblue;
+        }
+
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app">
+        <form action="">
+            <div class="avatar"   
+            @mouseover="formHover = true"
+            @mouseleave="formHover = false"
+            :style="{
+                color: formHover? 'white':'black',
+                background: activeColor? activeColor: '#df0' 
+                }">
+                <div class="head" :style="{
+                    left: formHover?
+                     '1.5rem':'1rem',
+                }"></div>
+            </div>
+        
+            <label for="">email</label>
+            <input type="email" v-model="email">
+            <br>
+            <label for="">name</label>
+            <input type="text" v-model="name">
+            {{name}}
+            <div>
+                <label for="" v-model="drink" name="drink">喜歡喝紅酒</label>
+                <input type="checkbox">
+                <label for="" v-model="drink" name="drink">喜歡喝燒酒</label>
+                <input type="checkbox">
+                {{drink}}
+            </div>
+            <div>
+                <input type="radio" id="taipei" name="location" value="taipei" v-model="location">
+                <label for="taipei">taipei</label>
+                <input type="radio" id="taipei" name="location" value="hsinchu" v-model="location">
+                <label for="taipei">hsinchu</label>
+                {{location}}                
+            </div>
+
+            <!-- <div class="tab">
+                <p v-if="location === 'taipei'">taipei</p>
+                <p v-else-if="location === 'hsinchu'">hsinchu</p>
+                <p v-else>阿災</p>
+            </div> -->
+            <div class="tab"v-if="location === 'taipei'">taipei</div>
+            <div class="tab"v-else-if="location === 'hsinchu'">hsinchu</div>
+            <div class="tab" v-else>阿災</div>
+            <hr>
+            <label for="food">food</label>
+            <select name="food" id="food" v-model="food">
+                <option disabled value="">請選擇</option>
+                <option value="pig">豬頭</option>
+                <option value="beef">牛頭</option>
+            </select>
+            {{food}}
+
+            <div>
+                {{color}}
+                <input type="color" id="head" name="head" v-model="color" value="#e66465">
+                <label for="head">Head</label>
+            </div>
+            <div>
+                {{date}}
+                <input type="date" name="date" v-model="date">
+                <label for="date">date</label>
+            </div>
+        </form>
+    </div>
+
+    <!-- Vue 2寫法 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   
+
+    <!-- Vue 3寫法(基本用這個) -->
+     <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        console.log(Vue)
+        
+        Vue.createApp({
+            data(){
+                return {
+                    activeColorcolor:'',
+                    formHover: false,
+                    email:'',
+                    name:'',
+                    location:'',
+                    drink:[],
+                    food:'',
+                    date:''
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
