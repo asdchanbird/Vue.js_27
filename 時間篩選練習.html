@@ -26,14 +26,14 @@
             <button v-for="page in 10" :key="page">{{page}}</button>
         </div> -->
         <div>
-            <!-- search:<input type="text" v-model="search"><br> -->
-            date:<input type="date" v-model="start">
+            date:<input type="date" v-model="startDate">
+            <input type="date" v-model="endDate">
+            <br>
+            <!-- <button @click="addData">add Data</button> -->
+            
         </div>
+        
         <hr>
-        <header>
-            search:<input type="text" v-model="search"><br>
-            篩選出大於:<input type="number" v-model="min">~<input type="number" v-model="max">$的商品
-        </header>
         <div v-if="load">loading</div>
         <p>總計:{{total}}</p>
         <!-- 變數 in 物件/陣列 -->
@@ -54,6 +54,7 @@
 
     <!-- Vue 3寫法(基本用這個) -->
     <script src="https://unpkg.com/vue@next"></script>
+   
     <script>     
         Vue.createApp({
             data(){
@@ -65,8 +66,12 @@
                     filter: 0,
                     min:0,
                     max:0,
-                    start:0,
-                    end:0,
+                    startDate:null,
+                    endDate: null,
+                    data: {
+
+                    } 
+
                 }
             },
            
@@ -78,38 +83,31 @@
             },
             computed:{
                 product(){
-                    console.log(dayjs())
+                    // console.log(dayjs())
                     let cache = this.source
-                    const c = dayjs();
-                    const datestart = dayjs(this.date_start).format('YYYY/MM/DD')
+                    // const c = dayjs();
+                    // let datestart = dayjs(this.date_start).format('YYYY/MM/DD')
+                    // console.log(datestart)
+                    // console.log(this.start)
+                    let startDate = this.startDate
+                    let endDate = this.endDate
+                    return this.filter(this.product, function(data){
+                        if((this.isNull(startDate) && this.isNull(endDate))){
+                            return true 
+                        }else{
+                            let date = data.product
+                            return (date >= startDate && date <= endDate);
+                        }
+                    })
 
-                    console.log(datestart)
-                    console.log(this.start)
-                    
                     if(this.start != '' ){
                         date = cache.filter(item=>{
                             return item.date_start > item.start
                             console.log(item.date_start)
                         })
                     } 
-                    if(this.min > 0 ){
-                        
-                        cache = cache.filter(item=>{
-                            return item.price > this.min
-                        })
-                    }
-                    if(this.max > 0 ){
-                      
-                        cache = cache.filter(item=>{
-                            return item.price < this.max
-                        })
-                    }
-                    if(this.search != ''){
-                        // console.log(this.search)
-                        return cache = cache.filter(item => {
-                            return item.title.includes(this.search)
-                        })
-                    }
+
+                   
                     return cache
                 },
                 total(){ 
