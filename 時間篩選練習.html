@@ -7,14 +7,17 @@
     <title>Vue3</title>
     <style>
         img {
-            width: 10%;
+            width: 70%;
         }
         .pagination {
             width: 100%;
         }
-        .productContainer {
-            display: inline;
+        .list-item {
+            width: 30%;
+            display: inline-block;
+            margin-top: 80px;
         }
+        
     </style>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
@@ -28,15 +31,21 @@
         <div>
             date:<input type="date" v-model="startDate">
             <input type="date" v-model="endDate">
-            <br>
-            <!-- <button @click="addData">add Data</button> -->
+            
+            <button @click="searchDate">搜尋</button>
             
         </div>
-        
+        <div class="list-item" v-for="item in product">
+            <div class="card">
+                <p><img src="https://fakeimg.pl/300x200/200"></p>
+                <p>飯店名 : {{item.name}}</p>
+                <p>價格 : {{item.price}}</p>
+                <p>FROM : {{item.date_start}}</p>
+                <p>TO : {{item.date_end}}</p>
+            </div>
+        </div>
         <hr>
-        <div v-if="load">loading</div>
-        <p>總計:{{total}}</p>
-        <!-- 變數 in 物件/陣列 -->
+        
         <div v-else class="productContainer">
             <div v-for="(item,index) in product" :key="item.id">
                 <p>{{item.title}}</p>
@@ -55,7 +64,9 @@
     <!-- Vue 3寫法(基本用這個) -->
     <script src="https://unpkg.com/vue@next"></script>
    
-    <script>     
+    <script>    
+        //  dayjs.extend(window.dayjs_plugin_isBetween) 
+        
         Vue.createApp({
             data(){
                 return {
@@ -68,9 +79,7 @@
                     max:0,
                     startDate:null,
                     endDate: null,
-                    data: {
-
-                    } 
+                    
 
                 }
             },
@@ -84,29 +93,21 @@
             computed:{
                 product(){
                     // console.log(dayjs())
-                    let cache = this.source
+                    cache = this.source
                     // const c = dayjs();
-                    // let datestart = dayjs(this.date_start).format('YYYY/MM/DD')
-                    // console.log(datestart)
-                    // console.log(this.start)
+                    // let datestart = dayjs(item.date_start).format('YYYY/MM/DD')
+                    // let dateEnd = dayjs(this.date_end).format('YYYY/MM/DD')
+                    // let from = dayjs(cache.date_start).format('YYYY/MM/DD')
+                    // console.log(from)
                     let startDate = this.startDate
                     let endDate = this.endDate
-                    return this.filter(cache, function(data){
-                        if((this.isNull(startDate) && this.isNull(endDate))){
-                            return true 
-                        }else{
-                            let date = data.product
-                            return (date >= startDate && date <= endDate);
-                        }
-                    })
 
-                    if(this.start != '' ){
-                        date = cache.filter(item=>{
-                            return item.date_start > item.start
-                            console.log(item.date_start)
-                        })
-                    } 
-
+                    // let from = dayjs(cache.date_start).format('YYYY/MM/DD')
+                    let from = cache.date_start
+                    console.log(from)
+                    // console.log(this.startDate)
+                    // console.log(this.endDate)
+                    
                    
                     return cache
                 },
@@ -136,20 +137,23 @@
                         for( item in this.product){
                             this.count.push(0)
                         }
+                        return {
+                            startDate: dayjs(item.date_start).format('YYYY/MM/DD')
+                        }
                         this.load = false
                     })
                 },
-                addCount(index){
-                    // console.log(index)
-                    this.count[index] += 1
-                    // this.sumTotal()
-                },
-                reduceCount(index){
-                    if(this.count[index] <= 0) return 
-                    this.count[index] -= 1
-                    // this.sumTotal()
-           
-                },
+                searchDate(){
+                    const IsBetween = require('dayjs/plugin/IsBetween');
+                    dayjs.extend(IsBetween);
+
+                    // dayjs.extend(window.dayjs_plugin_isBetween)
+                    if(this.startDate !== '' && this.endDate !== ''){
+                        this.source = this.cache.filter((item) => {
+                            return dayjs(cache.date_start).isBetween(this.startDate, dayjs(this.endDate), 'year')
+                        })
+                    }
+                }
             }
         }).mount('#app')    
     </script>
