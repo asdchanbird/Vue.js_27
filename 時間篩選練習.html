@@ -91,7 +91,7 @@
                     // console.log(this.start)
                     let startDate = this.startDate
                     let endDate = this.endDate
-                    return this.filter(this.product, function(data){
+                    return this.filter(cache, function(data){
                         if((this.isNull(startDate) && this.isNull(endDate))){
                             return true 
                         }else{
