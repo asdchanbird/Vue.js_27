@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            color: #fa0;
+        }
+        ul li {
+            list-style-type: none;
+        }
+        /* input[type="checkbox"] {
+            display: none;
+        }
+        input[type="checkbox"] + label {
+            color: #fa0;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            position: relative;
+            left: -50px;
+            background-color: transparent;
+            border: 2px solid #fa0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        label + :checked {
+            background-color: #dff;
+        } */
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>{{title}}</h1>
+        <input type="text" v-model="toDoList">
+        <button @click="createItem">ADD</button>
+        <ul>
+            <li v-for="(item, index) in list" :key="index" id="check1">
+                <input type="checkbox" v-model="item.select">{{item.name}}
+                <label for="check1"></label>
+            </li>
+        </ul>
+        <button @click="doneAll">Done All</button>
+        <hr>
+        <h3>done</h3>
+        <ul>
+            <li v-for="(item, index) in doneList" :key="index">
+                <input type="checkbox" v-model="item.select">{{item.name}}
+            </li>
+        </ul>
+        <button @click="clearAll">DELETE</button>
+        <button @click="clearSelect">DELETE SELECT</button>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    title: "TO DO LIST",
+                    toDoList: "",
+                    list: [
+                        {select: false,name: 'test',}
+                    ]
+                };
+            },
+            computed: {
+                doneList() {
+                    return this.list.filter(item => 
+                        item.select
+                    )
+                }
+            },
+            methods: {
+                createItem() {
+                    this.list.push({
+                        select: false,
+                        name: this.toDoList
+                    });
+                    this.toDoList = ""
+                },
+                doneAll(){
+                    this.list = this.list.map(item => {
+                        return {
+                            ...item,
+                            select: true
+                        }
+                    })
+                },
+                clearAll(){
+                    this.list= []
+                },
+                clearSelect(){
+                    this.list = this.list.filter(item => 
+                        !item.select
+                    )
+                },
+            },
+        }).mount('#app')
+    </script>
+</body>
+</html>
